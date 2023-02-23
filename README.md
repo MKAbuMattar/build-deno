@@ -2,6 +2,28 @@
 
 `build-deno` is a Node.js package that helps you build your Deno source code from your Node source code. It can copy files, change import paths, and skip files during the build process.
 
+<div align="center">
+  <a href="https://www.npmjs.com/package/build-deno" target="_blank">
+    <img src="https://img.shields.io/badge/npm-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white" alt=""/>
+  </a>
+
+  <a href="https://github.com/MKAbuMattar/build-deno" target="_blank">
+    <img src="https://img.shields.io/badge/github-%23181717.svg?style=for-the-badge&logo=github&logoColor=white" alt=""/>
+  </a>
+
+  <a href="https://github.com/MKAbuMattar/build-deno/releases">
+    <img alt="GitHub release" src="https://img.shields.io/github/v/release/MKAbuMattar/build-deno?color=%23d52128&label=Latest%20release&style=for-the-badge" />
+    </a>
+
+  <a href="https://github.com/MKAbuMattar/build-deno/blob/main/LICENSE">
+    <img alt="GitHub" src="https://img.shields.io/github/license/MKAbuMattar/build-deno?color=%23d52128&style=for-the-badge">
+  </a>
+
+  <a href="https://github.com/MKAbuMattar/build-deno/stargazers">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/MKAbuMattar/build-deno?color=%23d52128&label=github%20stars&style=for-the-badge">
+  </a>
+</div>
+
 ## Installation
 
 ```sh
