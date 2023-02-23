@@ -9,7 +9,7 @@
     "example",
     "playground"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "author": {
     "name": "Mohammad Abu Mattar",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/node": "18.14.0",
-    "build-deno": "1.0.1",
+    "build-deno": "1.0.2",
     "tsx": "3.12.3",
     "typescript": "4.9.5"
   }
