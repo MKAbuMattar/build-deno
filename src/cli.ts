@@ -4,8 +4,6 @@ import type { Options } from './types';
 import { build } from './core/build';
 import { version } from '../package.json';
 
-console.log(`\n🦕 \x1b[36mStarting build-deno...\x1b[0m`);
-
 /**
  * @description
  * Returns the path of the config file if it exists.
@@ -151,6 +149,8 @@ const cliOptions = (async (): Promise<Options> => {
     }
   }
 
+  console.log(`\n🦕 \x1b[36mStarting build-deno...\x1b[0m`);
+
   if (!configPath) {
     configPath = findConfigFileNameInCwd();
     if (!configPath) {
@@ -164,6 +164,8 @@ Please add a configuration file to the root directory of your project.
   - \x1b[32mbuild-deno.config.cjs\x1b[0m
   - \x1b[32mbuild-deno.config.mjs\x1b[0m
   - \x1b[32mbuild-deno.config.json\x1b[0m
+
+🔍 \x1b[36mFor more information, visit https://github.com/MKAbuMattar/build-deno#readme 🌐\x1b[0m
 `);
       process.exit(1);
     }
