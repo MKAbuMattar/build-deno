@@ -1,4 +1,4 @@
-import type { Path, ChangePackage, CopyFiles, Options } from '../src';
+import type { Path, ChangePackage, SkipFile, CopyFiles, Options } from '../src';
 import { build } from '../src';
 
 const root: Path = '';
@@ -40,6 +40,13 @@ const changePackage: ChangePackage[] = [
   },
 ];
 
+const skipFile: SkipFile[] = [
+  {
+    dir: '',
+    name: 'cli.ts',
+  },
+];
+
 const copyFiles: CopyFiles[] = [
   {
     from: 'README.md',
@@ -52,6 +59,7 @@ const options: Options = {
   rootDir,
   outDir,
   changePackage,
+  skipFile,
   copyFiles,
 };
 
