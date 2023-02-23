@@ -1,5 +1,4 @@
-import { join as joinPath } from 'npm:path';
-import { Path } from '../types/index.ts';
+import type { Path } from '../types/index.ts';
 
 /**
  * @description
@@ -10,4 +9,5 @@ import { Path } from '../types/index.ts';
  * @param {Path[]} parts The path parts to join.
  * @returns {string} The joined path.
  */
-export const join = (...parts: Path[]): string => joinPath(...parts);
+export const join = (...parts: Path[]): string =>
+  parts.join('/').replace(/\/\//g, '/');
