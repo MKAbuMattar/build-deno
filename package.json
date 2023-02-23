@@ -1,7 +1,7 @@
 {
   "name": "build-deno",
   "description": "build-deno is a Node.js package that helps you build your Deno source code from your Node source code.",
-  "version": "1.0.5",
+  "version": "1.5.0",
   "keywords": [
     "deno",
     "typescript",

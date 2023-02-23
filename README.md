@@ -50,7 +50,7 @@ Unlike Node, Deno doesn't use a package management like NPM and instead depends 
 You can also specify a particular version:
 
 ```ts
-import { build } from 'https://deno.land/x/build_deno@1.0.4/mod.ts';
+import { build } from 'https://deno.land/x/build_deno@1.5.0/mod.ts';
 ```
 
 or letest version:
@@ -108,6 +108,13 @@ const changePackage: ChangePackage[] = [
   },
 ];
 
+const skipFile: SkipFile[] = [
+  {
+    dir: '',
+    name: 'cli.ts',
+  },
+];
+
 const copyFiles: CopyFiles[] = [
   {
     from: 'README.md',
@@ -120,6 +127,7 @@ const options: Options = {
   rootDir,
   outDir,
   changePackage,
+  skipFile,
   copyFiles,
 };
 
@@ -234,8 +242,8 @@ module.exports = {
   ],
   skipFile: [
     {
-      dir: 'src',
-      name: 'index.ts',
+      dir: '',
+      name: 'cli.ts',
     },
   ],
   copyFiles: [
@@ -293,8 +301,8 @@ module.exports = {
   ],
   skipFile: [
     {
-      dir: 'src',
-      name: 'index.ts',
+      dir: '',
+      name: 'cli.ts',
     },
   ],
   copyFiles: [
@@ -352,8 +360,8 @@ export default {
   ],
   skipFile: [
     {
-      dir: 'src',
-      name: 'index.ts',
+      dir: '',
+      name: 'cli.ts',
     },
   ],
   copyFiles: [
@@ -411,8 +419,8 @@ export default {
   ],
   "skipFile": [
     {
-      "dir": "src",
-      "name": "index.ts"
+      "dir": "",
+      "name": "cli.ts"
     }
   ],
   "copyFiles": [

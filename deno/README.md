@@ -50,7 +50,7 @@ Unlike Node, Deno doesn't use a package management like NPM and instead depends 
 You can also specify a particular version:
 
 ```ts
-import { build } from 'https://deno.land/x/build_deno@1.0.4/mod.ts';
+import { build } from 'https://deno.land/x/build_deno@1.5.0/mod.ts';
 ```
 
 or letest version:
@@ -108,6 +108,13 @@ const changePackage: ChangePackage[] = [
   },
 ];
 
+const skipFile: SkipFile[] = [
+  {
+    dir: '',
+    name: 'cli.ts',
+  },
+];
+
 const copyFiles: CopyFiles[] = [
   {
     from: 'README.md',
@@ -120,6 +127,7 @@ const options: Options = {
   rootDir,
   outDir,
   changePackage,
+  skipFile,
   copyFiles,
 };
 
@@ -148,6 +156,283 @@ build(options);
 #### Example
 
 You can find an example of `build-deno` in use in the [Denoify](https://github.com/MKAbuMattar/recursive-directory) example project.
+
+### CLI Commands
+
+To use `build-deno`, you can run the following commands:
+
+#### `build-deno`
+
+Builds your project with the configuration file. Make sure to add the configuration file in the root directory of your project. The configuration file name can be one of the following:
+
+- `build-deno.config.js`
+- `build-deno.config.cjs`
+- `build-deno.config.mjs`
+- `build-deno.config.json`
+
+Example:
+
+```sh
+build-deno
+```
+
+#### `build-deno -H` or `build-deno --help`
+
+Displays the help menu for `build-deno`.
+
+Example:
+
+```sh
+build-deno -H
+```
+
+#### `build-deno -V` or `build-deno --version`
+
+Displays the version of `build-deno`.
+
+Example:
+
+```sh
+build-deno -V
+```
+
+## Configuration
+
+### `build-deno.config.js`
+
+<details>
+  <summary>Example Configuration File `build-deno.config.js`</summary>
+
+```js
+module.exports = {
+  root: '',
+  rootDir: 'src',
+  outDir: 'deno',
+  changePackage: [
+    {
+      package: `import { join as joinPath } from 'path';`,
+      replace: `import { join as joinPath } from 'npm:path';`,
+    },
+    {
+      package: `import { dirname, extname } from 'path';`,
+      replace: `import { dirname, extname } from 'npm:path';`,
+    },
+    {
+      package: `import { copyFile } from 'fs';`,
+      replace: `import { copyFile } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: `util`,
+      replace: `import { promisify } from 'npm:util';`,
+    },
+    {
+      package: `import { statSync } from 'fs';`,
+      replace: `import { statSync } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: 'fs/promises',
+      replace: `import { readdir, readFile, mkdir, writeFile } from 'npm:fs/promises';`,
+    },
+    {
+      package: `import { dirname } from 'path';`,
+      replace: `import { dirname } from 'npm:path';`,
+    },
+  ],
+  skipFile: [
+    {
+      dir: '',
+      name: 'cli.ts',
+    },
+  ],
+  copyFiles: [
+    {
+      from: 'README.md',
+      to: 'README.md',
+    },
+  ],
+};
+```
+
+</details>
+
+### `build-deno.config.cjs`
+
+<details>
+  <summary>Example Configuration File `build-deno.config.cjs`</summary>
+
+```js
+module.exports = {
+  root: '',
+  rootDir: 'src',
+  outDir: 'deno',
+  changePackage: [
+    {
+      package: `import { join as joinPath } from 'path';`,
+      replace: `import { join as joinPath } from 'npm:path';`,
+    },
+    {
+      package: `import { dirname, extname } from 'path';`,
+      replace: `import { dirname, extname } from 'npm:path';`,
+    },
+    {
+      package: `import { copyFile } from 'fs';`,
+      replace: `import { copyFile } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: `util`,
+      replace: `import { promisify } from 'npm:util';`,
+    },
+    {
+      package: `import { statSync } from 'fs';`,
+      replace: `import { statSync } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: 'fs/promises',
+      replace: `import { readdir, readFile, mkdir, writeFile } from 'npm:fs/promises';`,
+    },
+    {
+      package: `import { dirname } from 'path';`,
+      replace: `import { dirname } from 'npm:path';`,
+    },
+  ],
+  skipFile: [
+    {
+      dir: '',
+      name: 'cli.ts',
+    },
+  ],
+  copyFiles: [
+    {
+      from: 'README.md',
+      to: 'README.md',
+    },
+  ],
+};
+```
+
+</details>
+
+### `build-deno.config.mjs`
+
+<details>
+  <summary>Example Configuration File `build-deno.config.mjs`</summary>
+
+```js
+export default {
+  root: '',
+  rootDir: 'src',
+  outDir: 'deno',
+  changePackage: [
+    {
+      package: `import { join as joinPath } from 'path';`,
+      replace: `import { join as joinPath } from 'npm:path';`,
+    },
+    {
+      package: `import { dirname, extname } from 'path';`,
+      replace: `import { dirname, extname } from 'npm:path';`,
+    },
+    {
+      package: `import { copyFile } from 'fs';`,
+      replace: `import { copyFile } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: `util`,
+      replace: `import { promisify } from 'npm:util';`,
+    },
+    {
+      package: `import { statSync } from 'fs';`,
+      replace: `import { statSync } from 'npm:fs';`,
+    },
+    {
+      byPackageName: true,
+      package: 'fs/promises',
+      replace: `import { readdir, readFile, mkdir, writeFile } from 'npm:fs/promises';`,
+    },
+    {
+      package: `import { dirname } from 'path';`,
+      replace: `import { dirname } from 'npm:path';`,
+    },
+  ],
+  skipFile: [
+    {
+      dir: '',
+      name: 'cli.ts',
+    },
+  ],
+  copyFiles: [
+    {
+      from: 'README.md',
+      to: 'README.md',
+    },
+  ],
+};
+```
+
+</details>
+
+### `build-deno.config.json`
+
+<details>
+  <summary>Example Configuration File `build-deno.config.json`</summary>
+
+```json
+{
+  "root": "",
+  "rootDir": "src",
+  "outDir": "deno",
+  "changePackage": [
+    {
+      "package": "import { join as joinPath } from 'path';",
+      "replace": "import { join as joinPath } from 'npm:path';"
+    },
+    {
+      "package": "import { dirname, extname } from 'path';",
+      "replace": "import { dirname, extname } from 'npm:path';"
+    },
+    {
+      "package": "import { copyFile } from 'fs';",
+      "replace": "import { copyFile } from 'npm:fs';"
+    },
+    {
+      "byPackageName": true,
+      "package": "util",
+      "replace": "import { promisify } from 'npm:util';"
+    },
+    {
+      "package": "import { statSync } from 'fs';",
+      "replace": "import { statSync } from 'npm:fs';"
+    },
+    {
+      "byPackageName": true,
+      "package": "fs/promises",
+      "replace": "import { readdir, readFile, mkdir, writeFile } from 'npm:fs/promises';"
+    },
+    {
+      "package": "import { dirname } from 'path';",
+      "replace": "import { dirname } from 'npm:path';"
+    }
+  ],
+  "skipFile": [
+    {
+      "dir": "",
+      "name": "cli.ts"
+    }
+  ],
+  "copyFiles": [
+    {
+      "from": "README.md",
+      "to": "README.md"
+    }
+  ]
+}
+```
+
+</details>
 
 ## License
 
