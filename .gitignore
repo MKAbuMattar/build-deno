@@ -1,0 +1,17 @@
+# test
+coverage
+
+# node modules
+node_modules
+
+# build
+lib
+
+# playground
+/deno
+
+# example
+
+# logs
+.logs
+*.log
