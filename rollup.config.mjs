@@ -19,12 +19,6 @@ export default [
         format: 'es',
         sourcemap: false,
       },
-      {
-        file: 'lib/index.umd.js',
-        name: 'BuildDeno',
-        format: 'umd',
-        sourcemap: false,
-      },
     ],
     plugins: [
       terser(),
