@@ -1,11 +1,11 @@
 import type {
   Path,
-  SkipFile,
   ChangePackage,
+  SkipFile,
   CopyFiles,
   Options,
 } from './types/index.ts';
 import { build } from './core/build.ts';
 
-export type { Path, SkipFile, ChangePackage, CopyFiles, Options };
+export type { Path, ChangePackage, SkipFile, CopyFiles, Options };
 export { build };
