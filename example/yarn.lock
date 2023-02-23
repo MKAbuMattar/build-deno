@@ -146,10 +146,10 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
-build-deno@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/build-deno/-/build-deno-1.0.1.tgz#a671892e0dd1f74125b2ed70a76d20c17aeb10c9"
-  integrity sha512-ZiYEhCvVL7H5ZbLG6S51/M3+Y7eJB6zhOOyQVEt8CcsHiC6mRcoL2uw9K0pL0CSYSNcWOpN/ysMS45N/rjsqqg==
+build-deno@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/build-deno/-/build-deno-1.0.2.tgz#554d2cae396b6216bb13c10f98e91b067f746f87"
+  integrity sha512-ca1rsXjwI6RxuvE3FdYZti9cVnJcZBpEvBzZQ0TyfAHmymw0e5DCVgD8gtz018mXdbMLGXuogP1MraeEJdhJMw==
 
 esbuild@~0.17.6:
   version "0.17.10"
