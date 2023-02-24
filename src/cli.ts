@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import type { Options } from './types';
-import { build } from './core/build';
+import { build } from './core/build.core';
 import { version } from '../package.json';
 
 /**

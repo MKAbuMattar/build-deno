@@ -23,12 +23,11 @@ export const skipFileList = (
   return (
     fileList?.map((file) => {
       try {
-        return join(nodeSrcRoot, file.dir, file.name);
+        return join(nodeSrcRoot, file?.dir, file?.name);
       } catch (err) {
-        console.error(
+        throw new Error(
           `Error joining path ${file.dir} and ${file.name}: ${err}`,
         );
-        throw err;
       }
     }) ?? []
   );
