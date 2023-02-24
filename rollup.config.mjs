@@ -22,10 +22,11 @@ export default [
       },
     ],
     plugins: [
+      json(),
       resolve(),
       terser(),
       typescript({
-        tsconfig: 'tsconfig.esm.json',
+        tsconfig: 'tsconfig.json',
         declaration: true,
         declarationDir: 'types',
         rootDir: './src/',
@@ -34,8 +35,12 @@ export default [
     ],
   },
   {
+    input: 'lib/types/index.d.ts',
+    output: [{ file: 'lib/index.d.ts', format: 'es' }],
+    plugins: [dts()],
+  },
+  {
     input: 'src/cli.ts',
-
     output: [
       {
         file: 'lib/cli.js',
@@ -50,15 +55,10 @@ export default [
       resolve(),
       terser(),
       typescript({
-        tsconfig: 'tsconfig.esm.json',
-        rootDir: './src/',
+        tsconfig: 'tsconfig.json',
+        rootDir: '',
         sourceMap: false,
       }),
     ],
-  },
-  {
-    input: 'lib/types/index.d.ts',
-    output: [{ file: 'lib/index.d.ts', format: 'es' }],
-    plugins: [dts()],
   },
 ];

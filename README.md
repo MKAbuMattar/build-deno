@@ -7,10 +7,6 @@
     <img src="https://img.shields.io/badge/npm-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white" alt=""/>
   </a>
 
-  <a href="https://deno.land/x/build_deno" target="_blank">
-    <img src="https://img.shields.io/badge/deno-000000?style=for-the-badge&logo=deno&logoColor=white" alt=""/>
-  </a>
-
   <a href="https://github.com/MKAbuMattar/build-deno" target="_blank">
     <img src="https://img.shields.io/badge/github-%23181717.svg?style=for-the-badge&logo=github&logoColor=white" alt=""/>
   </a>
@@ -42,24 +38,6 @@ yarn add -D build-deno
 # pnpm
 pnpm add -D build-deno
 ```
-
-### Deno
-
-Unlike Node, Deno doesn't use a package management like NPM and instead depends on direct URL imports. You can access `build-deno` on deno.land/x. This is how the most recent version may be imported:
-
-You can also specify a particular version:
-
-```ts
-import { build } from 'https://deno.land/x/build_deno@1.5.0/mod.ts';
-```
-
-or letest version:
-
-```ts
-import { build } from 'https://deno.land/x/build_deno/mod.ts';
-```
-
-> NOTE: There isn't much of a change in how it's used, but the remainder of this README assumes you're using npm and importing straight from the `build-deno` package.
 
 ## Usage
 

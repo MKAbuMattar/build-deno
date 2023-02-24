@@ -5,7 +5,7 @@ const root: Path = '';
 
 const rootDir: Path = 'src';
 
-const outDir: Path = 'deno';
+const outDir: Path = 'playground/deno';
 
 const changePackage: ChangePackage[] = [
   {

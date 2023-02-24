@@ -10,4 +10,4 @@ import type { Path } from '../types';
  * @returns {string} The joined path.
  */
 export const join = (...parts: Path[]): string =>
-  parts.join('/').replace(/\/\//g, '/');
+  parts.join('/').replace(/\/+/g, '/').replace(/\/$/, '');

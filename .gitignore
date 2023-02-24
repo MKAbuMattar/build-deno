@@ -1,5 +1,6 @@
 # test
 coverage
+playground/test
 
 # node modules
 node_modules
@@ -8,7 +9,8 @@ node_modules
 lib
 dist
 
-# example
+# playground
+playground/deno
 
 # logs
 .logs

@@ -17,9 +17,8 @@ export const findReplacement = (
   target: Path,
   changePackage?: ChangePackage[],
 ): Path | undefined => {
-  if (!changePackage || changePackage.length === 0 || line === target) {
+  if (!changePackage || changePackage.length === 0 || line === target)
     return undefined;
-  }
 
   const change = changePackage.find((change) => {
     return change.byPackageName
@@ -27,5 +26,5 @@ export const findReplacement = (
       : change.package === line;
   });
 
-  return change?.replace;
+  return change?.replace ?? undefined;
 };
