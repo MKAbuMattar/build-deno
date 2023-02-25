@@ -1,7 +1,7 @@
 import { mkdir, readdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 
-import type { Options,Path } from '../types';
+import type { Options, Path } from '../types';
 import { copyFileList } from '../utils/copyFileList.util';
 import { doReplacement } from '../utils/doReplacement.util';
 import { getProjectPaths } from '../utils/getProjectPaths.util';
