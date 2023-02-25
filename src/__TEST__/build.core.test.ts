@@ -9,8 +9,8 @@ describe('build', () => {
       outDir: 'playground/test/build',
       changePackage: [
         {
-          package: `import { join as joinPath } from 'path';`,
-          replace: `import { join as joinPath } from 'npm:path';`,
+          package: 'import { join as joinPath } from \'path\';',
+          replace: 'import { join as joinPath } from \'npm:path\';',
         },
       ],
     };
@@ -30,7 +30,7 @@ describe('build', () => {
       skipFile: [
         {
           dir: 'src/core',
-          name: 'build.core.ts',
+          file: 'build.core.ts',
         },
       ],
     };

@@ -6,18 +6,6 @@ export type Path = string;
 
 /**
  * @description
- * An object representing a file or directory to skip during the build process.
- *
- * @property {Path} dir - The directory containing the file to skip.
- * @property {Path} name - The name of the file to skip.
- */
-export type SkipFile = {
-  dir: Path;
-  name: Path;
-};
-
-/**
- * @description
  * An object representing a package whose import path should be changed during the build process.
  *
  * @property {boolean} [byPackageName] - A boolean indicating whether the package
@@ -29,6 +17,38 @@ export type ChangePackage = {
   byPackageName?: boolean;
   package: string;
   replace: string;
+};
+
+/**
+ * @description
+ * An object representing a directory to skip during the build process.
+ *
+ * @property {Path} dir - The directory to skip.
+ */
+export type SkipDirectory = {
+  dir: Path;
+};
+
+/**
+ * @description
+ * An object representing a file or directory to skip during the build process.
+ *
+ * @property {Path} dir - The directory containing the file to skip.
+ * @property {Path} file - The name of the file to skip.
+ */
+export type SkipFile = {
+  dir: Path;
+  file: Path;
+};
+
+/**
+ * @description
+ * An object representing a file extension to skip during the build process.
+ *
+ * @property {string} extension - The file extension to skip.
+ */
+export type SkipExtension = {
+  extension: string;
 };
 
 /**
@@ -73,6 +93,8 @@ export type Options = {
   rootDir: Path;
   outDir: Path;
   changePackage?: ChangePackage[];
+  skipDirectory?: SkipDirectory[];
   skipFile?: SkipFile[];
+  skipExtension?: SkipExtension[];
   copyFiles?: CopyFiles[];
 };

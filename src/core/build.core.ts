@@ -1,11 +1,14 @@
-import { readdir, readFile, mkdir, writeFile } from 'fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
-import type { Path, Options } from '../types';
+
+import type { Options,Path } from '../types';
 import { copyFileList } from '../utils/copyFileList.util';
-import { join } from '../utils/join.util';
-import { skipFileList } from '../utils/skipFileList.util';
 import { doReplacement } from '../utils/doReplacement.util';
 import { getProjectPaths } from '../utils/getProjectPaths.util';
+import { getSkipDirectoryList } from '../utils/getSkipDirectoryList.util';
+import { getSkipExtensionList } from '../utils/getSkipExtensionList.util';
+import { getSkipFileList } from '../utils/getSkipFileList.util';
+import { join } from '../utils/join.util';
 
 /**
  * @description
@@ -30,7 +33,9 @@ export const build = async ({
   rootDir,
   outDir,
   changePackage = [],
+  skipDirectory = [],
   skipFile = [],
+  skipExtension = [],
   copyFiles = [],
 }: Options): Promise<void> => {
   const { projectRoot, nodeSrcRoot, denoSrcRoot } = getProjectPaths(
@@ -38,7 +43,19 @@ export const build = async ({
     outDir,
   );
 
-  const skipList: Path[] = skipFileList(rootDir, outDir, skipFile);
+  const skipDirectoryList: Path[] = getSkipDirectoryList(
+    rootDir,
+    outDir,
+    skipDirectory,
+  );
+
+  const skipFileList: Path[] = getSkipFileList(rootDir, outDir, skipFile);
+
+  const skipExtensionList: Path[] = getSkipExtensionList(
+    rootDir,
+    outDir,
+    skipExtension,
+  );
 
   const build = async (root: Path): Promise<void> => {
     const entries = await readdir(join(nodeSrcRoot, root), {
@@ -53,7 +70,11 @@ export const build = async ({
         const nodePath = join(nodeSrcRoot, root, entry.name);
         const denoPath = join(denoSrcRoot, root, entry.name);
 
-        if (skipList.includes(nodePath)) {
+        if (
+          skipDirectoryList.includes(nodePath) ||
+          skipFileList.includes(nodePath) ||
+          skipExtensionList.includes(nodePath)
+        ) {
           continue;
         }
 

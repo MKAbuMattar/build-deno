@@ -1,7 +1,8 @@
 import { dirname, extname } from 'path';
+
 import type { ChangePackage, Path } from '../types';
-import { checkIfExists } from './checkIfExists.util';
 import { findReplacement } from './findReplacement.util';
+import { isExists } from './isExists.util';
 import { join } from './join.util';
 
 /**
@@ -33,14 +34,14 @@ export const doReplacement = (
   const targetNodePathIfFile = targetNodePath + '.ts';
   const targetNodePathIfDir = join(targetNodePath, 'index.ts');
 
-  if (checkIfExists(targetNodePathIfFile)) {
+  if (isExists(targetNodePathIfFile)) {
     if (extname(targetNodePath) !== '.ts') {
       const newTarget = target + '.ts';
       return line.replace(target, newTarget);
     }
   }
 
-  if (checkIfExists(targetNodePathIfDir)) {
+  if (isExists(targetNodePathIfDir)) {
     const newTarget = join(target, 'index.ts');
     return line.replace(target, newTarget);
   }
