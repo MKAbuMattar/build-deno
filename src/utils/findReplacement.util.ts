@@ -1,4 +1,4 @@
-import type { ChangePackage,Path } from '../types';
+import type { ChangePackage, Path } from '../types';
 
 /**
  * @description

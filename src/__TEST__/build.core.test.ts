@@ -9,8 +9,8 @@ describe('build', () => {
       outDir: 'playground/test/build',
       changePackage: [
         {
-          package: 'import { join as joinPath } from \'path\';',
-          replace: 'import { join as joinPath } from \'npm:path\';',
+          package: "import { join as joinPath } from 'path';",
+          replace: "import { join as joinPath } from 'npm:path';",
         },
       ],
     };

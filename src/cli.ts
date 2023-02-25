@@ -11,6 +11,7 @@ import type {
   SkipExtension,
   SkipFile,
 } from './types';
+const start = performance.now();
 
 /**
  * @description
@@ -62,9 +63,7 @@ const findConfigInCwdByFileName = (
     if (possibleConfigFileNames.includes(configFileName as any)) {
       const configPath = getConfigPath(configFileName);
       if (configPath !== undefined) {
-        console.log(
-          `\n🚀  \x1b[36mUsing config file: ${configFileName}\x1b[0m`,
-        );
+        console.log(`\n🚀 \x1b[36mUsing config file: ${configFileName}\x1b[0m`);
         return configPath;
       }
     }
@@ -304,27 +303,18 @@ const cliOptions = (async (): Promise<Options> => {
   let configFileName: string | undefined = undefined;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    switch (arg) {
-      case '-H':
-      case '--help': {
-        help();
-        process.exit(0);
-      }
-      case '-V':
-      case '--version': {
-        console.log(`\n🦕 \x1b[36mbuild-deno v${version}\x1b[0m\n`);
-        process.exit(0);
-      }
-      case '-C':
-      case '--config': {
-        configFileName = args[++i];
-        break;
-      }
-      default: {
-        console.error(`\n❌ \x1b[31mUnknown option: ${arg}\x1b[0m`);
-        help();
-        process.exit(1);
-      }
+    if (arg === '-H' || arg === '--help') {
+      help();
+      process.exit(0);
+    } else if (arg === '-V' || arg === '--version') {
+      console.log(`\n🦕 \x1b[36mbuild-deno v${version}\x1b[0m\n`);
+      process.exit(0);
+    } else if (arg === '-C' || arg === '--config') {
+      configFileName = args[++i];
+    } else {
+      console.error(`\n❌ \x1b[31mUnknown option: ${arg}\x1b[0m`);
+      help();
+      process.exit(1);
     }
   }
 
@@ -381,5 +371,10 @@ const cliOptions = (async (): Promise<Options> => {
 
   console.log('\n👷 \x1b[36mBuilding project...\x1b[0m');
   await build(options);
-  console.log('\n✅ \x1b[32mBuild complete\x1b[0m');
+  const end = performance.now();
+  console.log(
+    `\n✅ \x1b[32mBuild complete in ${((end - start) / 1000).toFixed(
+      2,
+    )}s\x1b[0m`,
+  );
 })();
