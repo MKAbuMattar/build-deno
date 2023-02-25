@@ -1,4 +1,12 @@
-import type { Path, ChangePackage, SkipFile, CopyFiles, Options } from '../src';
+import type {
+  Path,
+  ChangePackage,
+  SkipDirectory,
+  SkipFile,
+  SkipExtension,
+  CopyFiles,
+  Options,
+} from '../src';
 import { build } from '../src';
 
 const root: Path = '';
@@ -38,12 +46,28 @@ const changePackage: ChangePackage[] = [
     package: `import { dirname } from 'path';`,
     replace: `import { dirname } from 'npm:path';`,
   },
+  {
+    package: `import { readdirSync } from 'fs';`,
+    replace: `import { readdirSync } from 'npm:fs';`,
+  },
+];
+
+const skipDirectory: SkipDirectory[] = [
+  {
+    dir: '__TEST__',
+  },
 ];
 
 const skipFile: SkipFile[] = [
   {
     dir: '',
-    name: 'cli.ts',
+    file: 'cli.ts',
+  },
+];
+
+const skipExtension: SkipExtension[] = [
+  {
+    extension: '.mock.ts',
   },
 ];
 
@@ -59,7 +83,9 @@ const options: Options = {
   rootDir,
   outDir,
   changePackage,
+  skipDirectory,
   skipFile,
+  skipExtension,
   copyFiles,
 };
 

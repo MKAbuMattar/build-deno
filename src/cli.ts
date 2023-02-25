@@ -1,8 +1,36 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import type { Options } from './types';
-import { build } from './core/build.core';
+import { existsSync, readFileSync } from 'fs';
+import { resolve } from 'path';
+
 import { version } from '../package.json';
+import { build } from './core/build.core';
+import type {
+  ChangePackage,
+  CopyFiles,
+  Options,
+  SkipDirectory,
+  SkipExtension,
+  SkipFile,
+} from './types';
+
+/**
+ * @description
+ * The possible names of the configuration file.
+ *
+ * @constant
+ * @name possibleConfigFileNames
+ * @type {readonly} The possible names of the configuration file.
+ */
+const possibleConfigFileNames: readonly [
+  'build-deno.config.js',
+  'build-deno.config.cjs',
+  'build-deno.config.mjs',
+  'build-deno.config.json',
+] = [
+  'build-deno.config.js',
+  'build-deno.config.cjs',
+  'build-deno.config.mjs',
+  'build-deno.config.json',
+] as const;
 
 /**
  * @description
@@ -15,8 +43,34 @@ import { version } from '../package.json';
  */
 const getConfigPath = (fileName: string): string | undefined => {
   const cwd = process.cwd();
-  const configPath = path.resolve(cwd, fileName);
-  return fs.existsSync(configPath) ? configPath : undefined;
+  const configPath = resolve(cwd, fileName);
+  return existsSync(configPath) ? configPath : undefined;
+};
+
+/**
+ * @description
+ * Finds and returns the path of a configuration file in the current working directory by its file name.
+ *
+ * @param {string|undefined} configFileName - The name of the configuration file to search for.
+ * If undefined, the function will look for any of the supported file names.
+ * @returns {string|undefined} The path of the configuration file if found, otherwise undefined.
+ */
+const findConfigInCwdByFileName = (
+  configFileName: string | undefined = undefined,
+): string | undefined => {
+  if (configFileName) {
+    if (possibleConfigFileNames.includes(configFileName as any)) {
+      const configPath = getConfigPath(configFileName);
+      if (configPath !== undefined) {
+        console.log(
+          `\n🚀  \x1b[36mUsing config file: ${configFileName}\x1b[0m`,
+        );
+        return configPath;
+      }
+    }
+  }
+
+  return undefined;
 };
 
 /**
@@ -30,12 +84,6 @@ const getConfigPath = (fileName: string): string | undefined => {
  * @returns {string | undefined} The path to the config file, or undefined if no config file was found.
  */
 const findConfigFileNameInCwd = (): string | undefined => {
-  const possibleConfigFileNames = [
-    'build-deno.config.js',
-    'build-deno.config.cjs',
-    'build-deno.config.mjs',
-    'build-deno.config.json',
-  ] as const;
   for (const fileName of possibleConfigFileNames) {
     const configPath = getConfigPath(fileName);
     if (configPath !== undefined) {
@@ -55,9 +103,6 @@ const findConfigFileNameInCwd = (): string | undefined => {
  * @param file The configuration file path.
  */
 const readConfig = async (file: string): Promise<Options> => {
-  console.log(
-    `\n\x1b[35m⚙️  Reading configuration from file:\x1b[0m \x1b[36m${file}\x1b[0m`,
-  );
   const extension = file.slice(file.lastIndexOf('.'));
   switch (extension) {
     case '.js':
@@ -67,13 +112,108 @@ const readConfig = async (file: string): Promise<Options> => {
       const imported = await import(`file://${file}`);
       return imported.default;
     case '.json':
-      const data = fs.readFileSync(file, { encoding: 'utf-8' });
-      return JSON.parse(data) as Options;
+      return JSON.parse(readFileSync(file, { encoding: 'utf-8' })) as Options;
     default:
       throw new Error(
         `❌  \x1b[31mERROR:\x1b[0m Unsupported file type: ${extension}`,
       );
   }
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isChangePackage
+ * @param {any} obj The object to validate.
+ * @returns {obj is ChangePackage} True if valid, otherwise false.
+ */
+const isChangePackage = (obj: any): obj is ChangePackage => {
+  return typeof obj.package === 'string' && typeof obj.replace === 'string';
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isSkipDirectory
+ * @param {any} obj The object to validate.
+ * @returns {obj is SkipDirectory} True if valid, otherwise false.
+ */
+const isSkipDirectory = (obj: any): obj is SkipDirectory => {
+  return typeof obj.dir === 'string';
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isSkipFile
+ * @param {any} obj The object to validate.
+ * @returns {obj is SkipFile} True if valid, otherwise false.
+ */
+const isSkipFile = (obj: any): obj is SkipFile => {
+  return typeof obj.dir === 'string' && typeof obj.file === 'string';
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isSkipExtension
+ * @param {any} obj The object to validate.
+ * @returns {obj is SkipExtension} True if valid, otherwise false.
+ */
+const isSkipExtension = (obj: any): obj is SkipExtension => {
+  return typeof obj.extension === 'string';
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isCopyFiles
+ * @param {any} obj The object to validate.
+ * @returns {obj is CopyFiles} True if valid, otherwise false.
+ */
+const isCopyFiles = (obj: any): obj is CopyFiles => {
+  return typeof obj.from === 'string' && typeof obj.to === 'string';
+};
+
+/**
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
+ *
+ * @function
+ * @name isOptions
+ * @param {any} obj The object to validate.
+ * @returns {obj is Options} True if valid, otherwise false.
+ */
+const isOptions = (obj: any): obj is Options => {
+  console.log('\n\x1b[35m⚙️  Validating configuration file\x1b[0m');
+  return (
+    typeof obj.root === 'string' &&
+    typeof obj.rootDir === 'string' &&
+    typeof obj.outDir === 'string' &&
+    (!obj.changePackage ||
+      (Array.isArray(obj.changePackage) &&
+        obj.changePackage.every(isChangePackage))) &&
+    (!obj.skipDirectory ||
+      (Array.isArray(obj.skipDirectory) &&
+        obj.skipDirectory.every(isSkipDirectory))) &&
+    (!obj.skipFile ||
+      (Array.isArray(obj.skipFile) && obj.skipFile.every(isSkipFile))) &&
+    (!obj.skipExtension ||
+      (Array.isArray(obj.skipExtension) &&
+        obj.skipExtension.every(isSkipExtension))) &&
+    (!obj.copyFiles ||
+      (Array.isArray(obj.copyFiles) && obj.copyFiles.every(isCopyFiles)))
+  );
 };
 
 const help = () => {
@@ -83,6 +223,7 @@ const help = () => {
 Options:
   \x1b[36m-H, --help\x1b[0m         Show help 📖
   \x1b[36m-V, --version\x1b[0m      Show version 🚀
+  \x1b[36m-C, --config\x1b[0m       Path to configuration file 📄
 
 Examples:
   $ \x1b[32mbuild-deno\x1b[0m         Build project with configuration file
@@ -103,6 +244,38 @@ Note:
 \x1b[35m👨‍💻 \x1b[36mAuthor:\x1b[0m \x1b[32mMohammad Abu Mattar\x1b[0m
 \x1b[35m🌐 \x1b[36mPortfolio:\x1b[0m \x1b[32mhttps://MKAbuMattar.github.io\x1b[0m
 `);
+};
+
+const configPathError = () => {
+  console.error(`
+❌ \x1b[31mMissing configuration file\x1b[0m
+  
+\x1b[33mMake sure to add the configuration file in the root directory of your project.\x1b[0m
+  
+📄 \x1b[33mConfiguration file name can be one of the following:\x1b[0m
+  - \x1b[32mbuild-deno.config.js\x1b[0m
+  - \x1b[32mbuild-deno.config.cjs\x1b[0m
+  - \x1b[32mbuild-deno.config.mjs\x1b[0m
+  - \x1b[32mbuild-deno.config.json\x1b[0m
+
+🔍 \x1b[36mFor more information, visit https://github.com/MKAbuMattar/build-deno#readme 🌐\x1b[0m
+  `);
+};
+
+const invalidConfigError = () => {
+  console.error(`
+❌ \x1b[31mInvalid configuration file\x1b[0m
+
+\x1b[33mMake sure to add the configuration file is formatted correctly.\x1b[0m
+
+📄 \x1b[33mConfiguration file name can be one of the following:\x1b[0m
+  - \x1b[32mbuild-deno.config.js\x1b[0m
+  - \x1b[32mbuild-deno.config.cjs\x1b[0m
+  - \x1b[32mbuild-deno.config.mjs\x1b[0m
+  - \x1b[32mbuild-deno.config.json\x1b[0m
+
+🔍 \x1b[36mFor more information, visit https://github.com/MKAbuMattar/build-deno#readme 🌐\x1b[0m
+  `);
 };
 
 /**
@@ -128,6 +301,7 @@ const cliOptions = (async (): Promise<Options> => {
   };
 
   let configPath: string | undefined = undefined;
+  let configFileName: string | undefined = undefined;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     switch (arg) {
@@ -138,8 +312,13 @@ const cliOptions = (async (): Promise<Options> => {
       }
       case '-V':
       case '--version': {
-        console.log(`\n🚀 \x1b[36mbuild-deno v${version}\x1b[0m\n`);
+        console.log(`\n🦕 \x1b[36mbuild-deno v${version}\x1b[0m\n`);
         process.exit(0);
+      }
+      case '-C':
+      case '--config': {
+        configFileName = args[++i];
+        break;
       }
       default: {
         console.error(`\n❌ \x1b[31mUnknown option: ${arg}\x1b[0m`);
@@ -149,31 +328,31 @@ const cliOptions = (async (): Promise<Options> => {
     }
   }
 
-  console.log(`\n🦕 \x1b[36mStarting build-deno...\x1b[0m`);
+  console.log('\n🦕 \x1b[36mStarting build-deno...\x1b[0m');
+
+  if (configFileName) {
+    configPath = findConfigInCwdByFileName(configFileName);
+  }
+
+  if (!configPath && configFileName === undefined) {
+    configPath = findConfigFileNameInCwd();
+  }
 
   if (!configPath) {
-    configPath = findConfigFileNameInCwd();
-    if (!configPath) {
-      console.error(`
-❌ \x1b[31mMissing configuration file\x1b[0m
-
-Please add a configuration file to the root directory of your project.
-
-📄 \x1b[33mConfiguration file name can be one of the following:\x1b[0m
-  - \x1b[32mbuild-deno.config.js\x1b[0m
-  - \x1b[32mbuild-deno.config.cjs\x1b[0m
-  - \x1b[32mbuild-deno.config.mjs\x1b[0m
-  - \x1b[32mbuild-deno.config.json\x1b[0m
-
-🔍 \x1b[36mFor more information, visit https://github.com/MKAbuMattar/build-deno#readme 🌐\x1b[0m
-`);
-      process.exit(1);
-    }
+    configPathError();
+    process.exit(1);
   }
 
   const configFile = await readConfig(configPath);
-  Object.assign(options, configFile);
 
+  if (!isOptions(configFile)) {
+    invalidConfigError();
+    process.exit(1);
+  }
+
+  console.log('\n📄 \x1b[36mConfiguration file is valid\x1b[0m');
+
+  Object.assign(options, configFile);
   return options;
 })();
 
@@ -181,23 +360,26 @@ Please add a configuration file to the root directory of your project.
  * @description
  * Create the CLI options from the command line arguments.
  *
+ * @function
  * @param args the command line arguments
  * @param cwd the current working directory
  * @returns a promise that resolves to the CLI options
  */
-(async () => {
-  const getCliOptions = await cliOptions;
+(async (): Promise<void> => {
+  const getCLIOptions = await cliOptions;
 
   const options: Options = {
-    root: getCliOptions.root,
-    rootDir: getCliOptions.rootDir,
-    outDir: getCliOptions.outDir,
-    changePackage: getCliOptions.changePackage,
-    skipFile: getCliOptions.skipFile,
-    copyFiles: getCliOptions.copyFiles,
+    root: getCLIOptions.root,
+    rootDir: getCLIOptions.rootDir,
+    outDir: getCLIOptions.outDir,
+    changePackage: getCLIOptions.changePackage,
+    skipDirectory: getCLIOptions.skipDirectory,
+    skipFile: getCLIOptions.skipFile,
+    skipExtension: getCLIOptions.skipExtension,
+    copyFiles: getCLIOptions.copyFiles,
   };
 
-  console.log(`\n👷 \x1b[36mBuilding project...\x1b[0m`);
+  console.log('\n👷 \x1b[36mBuilding project...\x1b[0m');
   await build(options);
-  console.log(`\n✅ \x1b[32mBuild complete\x1b[0m`);
+  console.log('\n✅ \x1b[32mBuild complete\x1b[0m');
 })();

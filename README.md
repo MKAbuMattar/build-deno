@@ -39,12 +39,37 @@ yarn add -D build-deno
 pnpm add -D build-deno
 ```
 
+### Deno
+
+Unlike Node, Deno doesn't use a package management like NPM and instead depends on direct URL imports. You can access `build-deno` on deno.land/x. This is how the most recent version may be imported:
+
+You can also specify a particular version:
+
+```ts
+import { build } from 'npm:build-deno@^1.5';
+```
+
+or letest version:
+
+```ts
+import { build } from 'npm:build-deno';
+```
+
+NOTE: There isn't much of a change in how it's used, but the remainder of this README assumes you're using npm and importing straight from the `build-deno` package.
+
 ## Usage
 
 ### API
 
 ```ts
-import type { Path, ChangePackage, CopyFiles, Options } from 'build-deno';
+import type {
+  Path,
+  ChangePackage,
+  SkipDirectory,
+  SkipFile,
+  CopyFiles,
+  Options,
+} from 'build-deno';
 import { build } from 'build-deno';
 
 const root: Path = '';
@@ -84,12 +109,28 @@ const changePackage: ChangePackage[] = [
     package: `import { dirname } from 'path';`,
     replace: `import { dirname } from 'npm:path';`,
   },
+  {
+    package: `import { readdirSync } from 'fs';`,
+    replace: `import { readdirSync } from 'npm:fs';`,
+  },
+];
+
+const skipDirectory: SkipDirectory[] = [
+  {
+    dir: '__TEST__',
+  },
 ];
 
 const skipFile: SkipFile[] = [
   {
     dir: '',
-    name: 'cli.ts',
+    file: 'cli.ts',
+  },
+];
+
+const skipExtension: SkipExtension[] = [
+  {
+    extension: '.mock.ts',
   },
 ];
 
@@ -105,7 +146,9 @@ const options: Options = {
   rootDir,
   outDir,
   changePackage,
+  skipDirectory,
   skipFile,
+  skipExtension,
   copyFiles,
 };
 
@@ -118,7 +161,9 @@ build(options);
 - `rootDir`: The directory of the Node source code. Required.
 - `outDir`: The directory where the Deno source code will be generated. Required.
 - `changePackage`: An array of objects that specify the package names to change the import path for. Optional.
+- `skipDirectory`: An array of directory names to skip during the build. Optional.
 - `skipFile`: An array of file paths to skip during the build. Optional.
+- `skipExtension`: An array of file extensions to skip during the build. Optional.
 - `copyFiles`: An array of file paths to copy from the Node source code to the Deno source code. Optional.
 
 #### Types
@@ -128,7 +173,9 @@ build(options);
 - `Path`: A string representing a file path.
 - `SkipFile`: An object containing the dir and name of a file to skip.
 - `ChangePackage`: An object containing the packageName and path of a package to change the import path for.
+- `SkipDirectory`: An object containing the dir of a directory to skip.
 - `CopyFiles`: An object containing the from and to paths of a file to copy.
+- `SkipExtension`: An object containing the extension of a file to skip.
 - `Options`: An object containing the above properties.
 
 #### Example
@@ -153,6 +200,20 @@ Example:
 ```sh
 build-deno
 ```
+
+> NOTE: The configuration file path must be relative to the root directory of your project.
+
+#### `build-deno -C <config-file>` or `build-deno --config <config-file>`
+
+Builds your project with the specified configuration file.
+
+Example:
+
+```sh
+build-deno -C build-deno.config.js
+```
+
+> NOTE: The configuration file path must be relative to the root directory of your project.
 
 #### `build-deno -H` or `build-deno --help`
 
@@ -217,11 +278,25 @@ module.exports = {
       package: `import { dirname } from 'path';`,
       replace: `import { dirname } from 'npm:path';`,
     },
+    {
+      package: `import { readdirSync } from 'fs';`,
+      replace: `import { readdirSync } from 'npm:fs';`,
+    },
+  ],
+  skipDirectory: [
+    {
+      dir: '__TEST__',
+    },
   ],
   skipFile: [
     {
       dir: '',
       name: 'cli.ts',
+    },
+  ],
+  skipExtension: [
+    {
+      extension: '.mock.ts',
     },
   ],
   copyFiles: [
@@ -276,11 +351,25 @@ module.exports = {
       package: `import { dirname } from 'path';`,
       replace: `import { dirname } from 'npm:path';`,
     },
+    {
+      package: `import { readdirSync } from 'fs';`,
+      replace: `import { readdirSync } from 'npm:fs';`,
+    },
+  ],
+  skipDirectory: [
+    {
+      dir: '__TEST__',
+    },
   ],
   skipFile: [
     {
       dir: '',
       name: 'cli.ts',
+    },
+  ],
+  skipExtension: [
+    {
+      extension: '.mock.ts',
     },
   ],
   copyFiles: [
@@ -335,11 +424,25 @@ export default {
       package: `import { dirname } from 'path';`,
       replace: `import { dirname } from 'npm:path';`,
     },
+    {
+      package: `import { readdirSync } from 'fs';`,
+      replace: `import { readdirSync } from 'npm:fs';`,
+    },
+  ],
+  skipDirectory: [
+    {
+      dir: '__TEST__',
+    },
   ],
   skipFile: [
     {
       dir: '',
       name: 'cli.ts',
+    },
+  ],
+  skipExtension: [
+    {
+      extension: '.mock.ts',
     },
   ],
   copyFiles: [
@@ -393,12 +496,26 @@ export default {
     {
       "package": "import { dirname } from 'path';",
       "replace": "import { dirname } from 'npm:path';"
+    },
+    {
+      "package": "import { readdirSync } from 'fs';",
+      "replace": "import { readdirSync } from 'npm:fs';"
+    }
+  ],
+  "skipDirectory": [
+    {
+      "dir": "__TEST__"
     }
   ],
   "skipFile": [
     {
       "dir": "",
       "name": "cli.ts"
+    }
+  ],
+  "skipExtension": [
+    {
+      "extension": ".mock.ts"
     }
   ],
   "copyFiles": [

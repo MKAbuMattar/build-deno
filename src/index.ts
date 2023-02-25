@@ -1,11 +1,21 @@
+import { build } from './core/build.core';
 import type {
-  Path,
   ChangePackage,
-  SkipFile,
   CopyFiles,
   Options,
+  Path,
+  SkipDirectory,
+  SkipExtension,
+  SkipFile,
 } from './types';
-import { build } from './core/build.core';
 
-export type { Path, ChangePackage, SkipFile, CopyFiles, Options };
+export type {
+  ChangePackage,
+  CopyFiles,
+  Options,
+  Path,
+  SkipDirectory,
+  SkipExtension,
+  SkipFile,
+};
 export { build };

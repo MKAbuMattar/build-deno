@@ -1,7 +1,7 @@
 {
   "name": "build-deno",
   "description": "build-deno is a Node.js package that helps you build your Deno source code from your Node source code.",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "keywords": [
     "deno",
     "typescript",
@@ -33,7 +33,7 @@
     "format": "npm run lint:format && npm run prettier:format",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "clean:playground": "rm -rf deno",
+    "clean:playground": "rm -rf playground/deno",
     "playground": "npm run clean:playground && tsx playground/index.ts",
     "clean:lib": "rm -rf lib",
     "clean:types": "rm -rf lib/types",

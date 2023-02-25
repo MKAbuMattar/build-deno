@@ -4,8 +4,8 @@ import { findReplacement } from '../utils/findReplacement.util';
 describe('findReplacement', () => {
   const changePackage: ChangePackage[] = [
     {
-      package: `import { new-package } from 'new-package';`,
-      replace: `import { new-package } from 'npm:new-package';`,
+      package: 'import { new-package } from \'new-package\';',
+      replace: 'import { new-package } from \'npm:new-package\';',
     },
     {
       byPackageName: true,
@@ -29,7 +29,7 @@ describe('findReplacement', () => {
       findReplacement('some-line', 'some-package', [
         // @ts-ignore
         {
-          package: `import { new-package } from 'new-package';`,
+          package: 'import { new-package } from \'new-package\';',
         },
       ]),
     ).toBeUndefined();
@@ -38,11 +38,11 @@ describe('findReplacement', () => {
   test('returns the correct replacement', () => {
     expect(
       findReplacement(
-        `import { new-package } from 'new-package';`,
+        'import { new-package } from \'new-package\';',
         'original-package',
         changePackage,
       ),
-    ).toEqual(`import { new-package } from 'npm:new-package';`);
+    ).toEqual('import { new-package } from \'npm:new-package\';');
     expect(
       findReplacement('some-package', 'some-package', changePackage),
     ).toBeUndefined();

@@ -1,4 +1,5 @@
 import { statSync } from 'fs';
+
 import type { Path } from '../types';
 
 /**
@@ -8,11 +9,11 @@ import type { Path } from '../types';
  * If an error occurs, it returns false and logs the error.
  *
  * @function
- * @name checkIfExists
+ * @name isExists
  * @param {Path} path The path to the file to check.
  * @returns {boolean} Whether the file exists or not.
  */
-export const checkIfExists = (path: Path): boolean => {
+export const isExists = (path: Path): boolean => {
   try {
     const stat = statSync(path);
     return stat.isFile();
