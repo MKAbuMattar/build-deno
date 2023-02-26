@@ -22,13 +22,13 @@
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
     "isolatedModules": true,
-    "outDir": "lib",
+    "outDir": "lib"
   },
   "include": [
-    "src/**/*",
+    "src/**/*"
   ],
   "exclude": [
     "src/**/*.test.ts",
-    "src/**/*.mock.ts",
+    "src/**/*.mock.ts"
   ]
 }

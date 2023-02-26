@@ -1,8 +1,10 @@
+import type { PathLike } from 'fs';
+
 /**
  * @description
  * A string representing a file or directory path.
  */
-export type Path = string;
+export type Path = PathLike & String & string;
 
 /**
  * @description
@@ -13,11 +15,11 @@ export type Path = string;
  * @property {string} package - The name of the package to match in import statements.
  * @property {string} replace - The new import path for the matched package.
  */
-export type ChangePackage = {
+export interface ChangePackage {
   byPackageName?: boolean;
   package: string;
   replace: string;
-};
+}
 
 /**
  * @description
@@ -25,9 +27,9 @@ export type ChangePackage = {
  *
  * @property {Path} dir - The directory to skip.
  */
-export type SkipDirectory = {
+export interface SkipDirectory {
   dir: Path;
-};
+}
 
 /**
  * @description
@@ -36,10 +38,10 @@ export type SkipDirectory = {
  * @property {Path} dir - The directory containing the file to skip.
  * @property {Path} file - The name of the file to skip.
  */
-export type SkipFile = {
+export interface SkipFile {
   dir: Path;
   file: Path;
-};
+}
 
 /**
  * @description
@@ -47,9 +49,9 @@ export type SkipFile = {
  *
  * @property {string} extension - The file extension to skip.
  */
-export type SkipExtension = {
+export interface SkipExtension {
   extension: string;
-};
+}
 
 /**
  * @description
@@ -58,10 +60,10 @@ export type SkipExtension = {
  * @property {Path} from - The source file to copy.
  * @property {Path} to - The destination file to copy to.
  */
-export type CopyFiles = {
+export interface CopyFiles {
   from: Path;
   to: Path;
-};
+}
 
 /**
  * @description
@@ -71,11 +73,11 @@ export type CopyFiles = {
  * @property {string} nodeSrcRoot - The directory of the Node source code.
  * @property {string} denoSrcRoot - The directory of the Deno source code.
  */
-export type ProjectPaths = {
+export interface ProjectPaths {
   projectRoot: string;
   nodeSrcRoot: string;
   denoSrcRoot: string;
-};
+}
 
 /**
  * @description
@@ -88,7 +90,7 @@ export type ProjectPaths = {
  * @property {SkipFile[]} [skipFile] - An array of file paths to skip during the build.
  * @property {CopyFiles[]} [copyFiles] - An array of file paths to copy from the Node source code to the Deno source code.
  */
-export type Options = {
+export interface Options {
   root: Path;
   rootDir: Path;
   outDir: Path;
@@ -97,4 +99,4 @@ export type Options = {
   skipFile?: SkipFile[];
   skipExtension?: SkipExtension[];
   copyFiles?: CopyFiles[];
-};
+}
