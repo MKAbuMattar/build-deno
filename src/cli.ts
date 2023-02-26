@@ -1,7 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { version } from '../package.json';
 import { build } from './core/build.core';
 import type {
   ChangePackage,
@@ -11,7 +10,26 @@ import type {
   SkipExtension,
   SkipFile,
 } from './types';
-const start = performance.now();
+
+/**
+ * @description
+ * The start time of the script.
+ *
+ * @constant
+ * @name START
+ * @type {number} The start time of the script.
+ */
+const START: number = performance.now();
+
+/**
+ * @description
+ * The version of the package.
+ *
+ * @constant
+ * @name VERSION
+ * @type {string} The version of the package.
+ */
+const VERSION = '__VERSION__';
 
 /**
  * @description
@@ -307,7 +325,7 @@ const cliOptions = (async (): Promise<Options> => {
       help();
       process.exit(0);
     } else if (arg === '-V' || arg === '--version') {
-      console.log(`\n🦕 \x1b[36mbuild-deno v${version}\x1b[0m\n`);
+      console.log(`\n🦕 \x1b[36mbuild-deno v${VERSION}\x1b[0m\n`);
       process.exit(0);
     } else if (arg === '-C' || arg === '--config') {
       configFileName = args[++i];
@@ -370,10 +388,21 @@ const cliOptions = (async (): Promise<Options> => {
   };
 
   console.log('\n👷 \x1b[36mBuilding project...\x1b[0m');
+
   await build(options);
-  const end = performance.now();
+
+  /**
+   * @description
+   * End the timer and log the time it took to build the project.
+   *
+   * @constant
+   * @name END
+   * @type {number}
+   */
+  const END: number = performance.now();
+
   console.log(
-    `\n✅ \x1b[32mBuild complete in ${((end - start) / 1000).toFixed(
+    `\n✅ \x1b[32mBuild complete in ${((END - START) / 1000).toFixed(
       2,
     )}s\x1b[0m`,
   );
