@@ -1,11 +1,10 @@
 import type { Path } from '../types';
 
 /**
- * @description
- * Joins multiple parts of a path together.
- *
  * @function
  * @name join
+ * @description
+ * Joins multiple parts of a path together.
  * @param {Path[]} parts The path parts to join.
  * @returns {string} The joined path.
  */

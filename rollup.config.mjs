@@ -46,6 +46,7 @@ export default [
   },
   {
     input: 'src/cli.ts',
+    external: ['path', 'fs', '.'],
     plugins: [
       replace({
         preventAssignment: true,

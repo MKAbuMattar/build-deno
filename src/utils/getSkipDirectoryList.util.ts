@@ -5,12 +5,11 @@ import { getProjectPaths } from './getProjectPaths.util';
 import { join } from './join.util';
 
 /**
+ * @function
+ * @name getSkipDirectoryList
  * @description
  * Returns the absolute paths of files in directories that should be skipped when
  * generating the changelog.
- *
- * @function
- * @name getSkipDirectoryList
  * @param {Path} sourceDir - The directory where the directories to skip are located.
  * @param {Path} outDir - The output directory.
  * @param {SkipDirectory[]} directoryList - The list of directories to skip.

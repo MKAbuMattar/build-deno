@@ -5,12 +5,11 @@ import type { Path, SkipExtension } from '../types';
 import { getProjectPaths } from './getProjectPaths.util';
 
 /**
+ * @function
+ * @name skipExtensionList
  * @description
  * Returns the absolute paths of files with specified extensions that should be skipped
  * when building files.
- *
- * @function
- * @name skipExtensionList
  * @param {Path} sourceDir - The directory where the files to skip are located.
  * @param {Path} outDir - The output directory.
  * @param {SkipExtension[]} extensions - The list of file extensions to skip.

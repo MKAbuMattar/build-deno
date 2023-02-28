@@ -2,12 +2,11 @@ import type { Path, ProjectPaths } from '../types';
 import { join } from './join.util';
 
 /**
+ * @function
+ * @name getProjectPaths
  * @description
  * Returns an object containing the paths to the project root directory,
  * the node source root directory, and the deno source root directory.
- *
- * @function
- * @name getProjectPaths
  * @param {Path} nodeSrcRootDir The path to the node project's source root directory
  * relative to the project root.
  * @param {Path} denoSrcRootDir The path to the deno source code's output directory
