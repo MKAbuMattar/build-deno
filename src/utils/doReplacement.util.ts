@@ -6,13 +6,12 @@ import { isExists } from './isExists.util';
 import { join } from './join.util';
 
 /**
+ * @function
+ * @name doReplacement
  * @description
  * Replace the target in the line with the replacement.
  * If the target is a directory, then replace the target with the target/index.ts.
  * If the target is a file, then replace the target with the target.ts.
- *
- * @function
- * @name doReplacement
  * @param {Path} nodePath The nodePath of the target to be replaced.
  * @param {Path} line  The line to modify.
  * @param {Path} target The target string to replace.

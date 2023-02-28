@@ -11,14 +11,13 @@ import { getSkipFileList } from '../utils/getSkipFileList.util';
 import { join } from '../utils/join.util';
 
 /**
+ * @async
+ * @function
+ * @name build
  * @description
  * Builds the Deno source code from the Node source code,
  * copies files from the Node source code to the Deno source code,
  * changes the import paths, and skips files.
- *
- * @async
- * @function
- * @name build
  * @param {Options} options An object containing the following properties:
  * @param {Path} options.root The root directory.
  * @param {Path} options.rootDir The directory of the Node source code.

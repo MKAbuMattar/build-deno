@@ -7,12 +7,11 @@ import { join } from './join.util';
 const copyFileAsync = promisify(copyFile);
 
 /**
- * @description
- * Copies files from one directory to another
- *
  * @async
  * @function
  * @name copyFileList
+ * @description
+ * Copies files from one directory to another
  * @param {Path} projectRoot The path to the root of the project
  * @param {Path} denoSrcRoot The path to the root of the deno directory
  * @param {CopyFiles[]} files An array of objects containing the file paths of the files to be copied

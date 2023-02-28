@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { build } from './core/build.core';
+import { build } from '.';
 import type {
   ChangePackage,
   CopyFiles,
@@ -12,34 +12,31 @@ import type {
 } from './types';
 
 /**
- * @description
- * The start time of the script.
- *
  * @constant
  * @name START
+ * @description
+ * The start time of the script.
  * @type {number} The start time of the script.
  */
 const START: number = performance.now();
 
 /**
- * @description
- * The version of the package.
- *
  * @constant
  * @name VERSION
+ * @description
+ * The version of the package.
  * @type {string} The version of the package.
  */
 const VERSION = '__VERSION__';
 
 /**
+ * @constant
+ * @name POSSIBLE_CONFIG_FILE_NAMES
  * @description
  * The possible names of the configuration file.
- *
- * @constant
- * @name possibleConfigFileNames
  * @type {readonly} The possible names of the configuration file.
  */
-const possibleConfigFileNames: readonly [
+const POSSIBLE_CONFIG_FILE_NAMES: readonly [
   'build-deno.config.js',
   'build-deno.config.cjs',
   'build-deno.config.mjs',
@@ -52,11 +49,10 @@ const possibleConfigFileNames: readonly [
 ] as const;
 
 /**
- * @description
- * Returns the path of the config file if it exists.
- *
  * @function
  * @name getConfigPath
+ * @description
+ * Returns the path of the config file if it exists.
  * @param {string} fileName The name of the config file.
  * @returns {string | undefined} The path to the config file or undefined.
  */
@@ -67,9 +63,10 @@ const getConfigPath = (fileName: string): string | undefined => {
 };
 
 /**
+ * @function
+ * @name findConfigInCwdByFileName
  * @description
  * Finds and returns the path of a configuration file in the current working directory by its file name.
- *
  * @param {string|undefined} configFileName - The name of the configuration file to search for.
  * If undefined, the function will look for any of the supported file names.
  * @returns {string|undefined} The path of the configuration file if found, otherwise undefined.
@@ -78,7 +75,7 @@ const findConfigInCwdByFileName = (
   configFileName: string | undefined = undefined,
 ): string | undefined => {
   if (configFileName) {
-    if (possibleConfigFileNames.includes(configFileName as any)) {
+    if (POSSIBLE_CONFIG_FILE_NAMES.includes(configFileName as any)) {
       const configPath = getConfigPath(configFileName);
       if (configPath !== undefined) {
         console.log(`\n🚀 \x1b[36mUsing config file: ${configFileName}\x1b[0m`);
@@ -91,17 +88,16 @@ const findConfigInCwdByFileName = (
 };
 
 /**
+ * @function
+ * @name findConfigFileNameInCwd
  * @description
  * Find the config file in the current working directory.
  * This will first check for a config file in the current working directory,
  * then check for a config file in the user's home directory.
- *
- * @function
- * @name findConfigFileNameInCwd
  * @returns {string | undefined} The path to the config file, or undefined if no config file was found.
  */
 const findConfigFileNameInCwd = (): string | undefined => {
-  for (const fileName of possibleConfigFileNames) {
+  for (const fileName of POSSIBLE_CONFIG_FILE_NAMES) {
     const configPath = getConfigPath(fileName);
     if (configPath !== undefined) {
       console.log(`\n🚀  \x1b[36mUsing config file: ${fileName}\x1b[0m`);
@@ -112,11 +108,10 @@ const findConfigFileNameInCwd = (): string | undefined => {
 };
 
 /**
- * @description
- * Read configuration file and return configuration object.
- *
  * @function
  * @name readConfig
+ * @description
+ * Read configuration file and return configuration object.
  * @param file The configuration file path.
  */
 const readConfig = async (file: string): Promise<Options> => {
@@ -138,11 +133,10 @@ const readConfig = async (file: string): Promise<Options> => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isChangePackage
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is ChangePackage} True if valid, otherwise false.
  */
@@ -151,11 +145,10 @@ const isChangePackage = (obj: any): obj is ChangePackage => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isSkipDirectory
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is SkipDirectory} True if valid, otherwise false.
  */
@@ -164,11 +157,10 @@ const isSkipDirectory = (obj: any): obj is SkipDirectory => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isSkipFile
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is SkipFile} True if valid, otherwise false.
  */
@@ -177,11 +169,10 @@ const isSkipFile = (obj: any): obj is SkipFile => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isSkipExtension
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is SkipExtension} True if valid, otherwise false.
  */
@@ -190,11 +181,10 @@ const isSkipExtension = (obj: any): obj is SkipExtension => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isCopyFiles
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is CopyFiles} True if valid, otherwise false.
  */
@@ -203,11 +193,10 @@ const isCopyFiles = (obj: any): obj is CopyFiles => {
 };
 
 /**
- * @description
- * Validate configuration object. Returns true if valid, otherwise false.
- *
  * @function
  * @name isOptions
+ * @description
+ * Validate configuration object. Returns true if valid, otherwise false.
  * @param {any} obj The object to validate.
  * @returns {obj is Options} True if valid, otherwise false.
  */
@@ -296,13 +285,12 @@ const invalidConfigError = () => {
 };
 
 /**
+ * @function
+ * @name cliOptions
  * @description
  * Get options from the command line, and return the options object.
  * If no options are provided, the function will try to read the configuration file.
  * If no configuration file is found, the function will return the default options.
- *
- * @function
- * @name cliOptions
  * @param {string[]} args The arguments passed to the command line.
  * @returns {Promise<Options>} The options object.
  */
@@ -365,10 +353,9 @@ const cliOptions = (async (): Promise<Options> => {
 })();
 
 /**
+ * @function
  * @description
  * Create the CLI options from the command line arguments.
- *
- * @function
  * @param args the command line arguments
  * @param cwd the current working directory
  * @returns a promise that resolves to the CLI options
@@ -392,11 +379,10 @@ const cliOptions = (async (): Promise<Options> => {
   await build(options);
 
   /**
-   * @description
-   * End the timer and log the time it took to build the project.
-   *
    * @constant
    * @name END
+   * @description
+   * End the timer and log the time it took to build the project.
    * @type {number}
    */
   const END: number = performance.now();

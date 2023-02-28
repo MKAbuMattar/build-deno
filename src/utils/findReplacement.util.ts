@@ -1,12 +1,11 @@
 import type { ChangePackage, Path } from '../types';
 
 /**
+ * @function
+ * @name findReplacement
  * @description
  * Find the replacement package for a given package. If the package is not in the
  * change package list, then return the original package.
- *
- * @function
- * @name findReplacement
  * @param {Path} line The line to replace.
  * @param {Path} target The package to replace.
  * @param {ChangePackage[]} changePackage The list of packages to change.
