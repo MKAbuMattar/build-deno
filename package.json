@@ -1,7 +1,7 @@
 {
   "name": "build-deno",
   "description": "build-deno is a Node.js package that helps you build your Deno source code from your Node source code.",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "keywords": [
     "deno",
     "typescript",
@@ -49,7 +49,7 @@
     "@rollup/plugin-terser": "0.4.0",
     "@rollup/plugin-typescript": "11.0.0",
     "@types/jest": "29.4.0",
-    "@types/node": "18.14.2",
+    "@types/node": "18.14.5",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.54.0",
     "eslint": "8.35.0",
@@ -60,7 +60,7 @@
     "husky": "^8.0.0",
     "jest": "29.4.3",
     "prettier": "2.8.4",
-    "rollup": "3.17.3",
+    "rollup": "3.18.0",
     "rollup-plugin-dts": "5.2.0",
     "ts-jest": "29.0.5",
     "tslib": "2.5.0",
